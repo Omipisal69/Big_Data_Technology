@@ -1,0 +1,91 @@
+start-all.sh
+
+spark version
+
+start-master.sh
+
+start-worker.sh spark://bigdata-VirtualBox:7077 
+
+Allocate 2 cores for spark
+start-worker.sh -c 2 spark://bigdata-VirtualBox:7077 
+
+Allocate specific RAM for spark
+start-worker.sh -m 2G spark://bigdata-VirtualBox:7077 
+
+ctlr+d
+
+open spark in python terminal
+pyspark
+
+open spark in R terminal
+sparkR
+
+open spark in SQL terminal (it use hive)
+spark-sql
+
+Create RDD's
+val rdd = sc.parallelize(Array(1,2,3,4,5,6,7,8,9,10))
+
+how many partitions are formed
+rdd.getNumPartitions
+
+its like print
+rdd.collect()
+
+Load file
+val rdd = sc.textFile("fruits.txt")
+
+For Each loop
+rdd.foreach(f=>{println(f)})
+
+load folder
+val rdd = sc.wholetextFile("dataset/*")
+
+load marks.txt
+split it separated by ","
+val rdd2 = rdd.map(f => {f.split(",")})
+print:- rdd2.foreach(f=>{println(f)})
+
+Print separated by space
+rdd2.foreach( f => {println(f(0)+" "+f(1)+" "+f(2))})
+
+See context eg.
+val rdd=spark.sparkContext.parallelize(Seq(("Java", 20000), ("Python", 100000), ("Scala", 3000)))
+
+
+Import spark Session
+import org.apache.spark.sql.SparkSession
+
+Create Session
+val spark:SparkSession = SparkSession.builder().master("local[3]").appName("mitu.co.in").getOrCreate()
+
+Create empty Rdd
+val rddString = spark.sparkContext.emptyRDD[String]
+
+Save file
+rdd.saveAsTextFile("test.txt")
+
+import RDD
+import org.apache.spark.rdd.RDD
+
+Mapper:
+val rdd3:RDD[(String,Int)]= rdd2.map(m=>(m,1))
+
+search data start with letter "M"
+val rdd4 = rdd3.filter(a=> a._1.startsWith("M"))
+
+Reducer:
+val rdd5 = rdd3.reduceByKey(_+_)
+
+print output
+rdd5.foreach(println)
+
+Use Word file country name
+val rdd = spark.sparkContext.parallelize(List("Germany India USA","USA India Russia","India Brazil Canada China"))
+
+split data
+val wordsRDD = rdd.flatMap(_.split(" "))
+
+mapper:
+val wordsRdd = rdd.flatMap(_.split(" "))
+
